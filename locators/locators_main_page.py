@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 
+"""qa-scooter.praktikum-services.ru/"""
 class ElementsMainPage:
     # Кнопка "Заказать" наверху страницы
     TOP_ORDER_BUTTON =  (By.XPATH, "//button[@class='Button_Button__ra12g' and text()='Заказать']")
@@ -17,3 +18,7 @@ class ElementsMainPage:
     ELEMENT_SIXTH = (By.ID, "accordion__panel-5")
     ELEMENT_SEVENTH = (By.ID, "accordion__panel-6")
     ELEMENT_EIGHTH = (By.ID, "accordion__panel-7")
+
+    # Кнопки в хэдере
+    BUTTON_YANDEX_ON_HEADER = (By.CLASS_NAME, "Header_LogoYandex__3TSOI")   # Кнопка "Яндекс" на лого в хедере
+    BUTTON_SCOOTER_ON_HEADER = (By.CLASS_NAME, "Header_LogoScooter__3lsAR") # # Кнопка "Самокат" на лого в хедере

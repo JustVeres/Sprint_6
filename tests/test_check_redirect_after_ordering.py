@@ -1,74 +1,68 @@
 import pytest
 import allure
 from pages.main_page import MainPage
-from pages.order_registration_page_one import FirstPageOrdering
-from pages.order_registration_page_two import SecondPageOrdering
-from pages.order_status_page import OrderStatusPage
-from data.data_url import Url
+from pages.order_page import OrderPage
+from data.data_url import Urls
 
 class TestCheckRedirect:
     @allure.title('Проверка редиректа на dzen.ru через кнопки хедера после заказа')
     @allure.description('Тест-кейс на проверку перенаправления на dzen.ru после успешного оформления заказа через верхнюю и среднюю кнопку заказа на сайте')
-    @pytest.mark.parametrize("start_order", ["wait_and_click_top_order_button", "scroll_and_click_middle_order_button"])
+    @pytest.mark.parametrize("start_order", ["click_top_order_button", "click_middle_order_button"])
     def test_redirect_to_dzen_page_after_order(self, driver, start_order):
-        driver.get(Url.qa_scooter_main_url)
-        main = MainPage(driver)
+        main_page = MainPage(driver)
+        main_page.open_main_page()
         # Старт заказа
-        getattr(main, start_order)()
+        getattr(main_page, start_order)()
 
+        """Делаем заказ"""
         # Первая страница заказа
-        FPO = FirstPageOrdering(driver)
-        FPO.fill_first_name_field()
-        FPO.fill_last_name_field()
-        FPO.fill_city_field()
-        FPO.fill_metro_station_field()
-        FPO.fill_number_phone_field()
-        FPO.click_next_button()
+        order_page = OrderPage(driver)
+        order_page.fill_first_name_field()
+        order_page.fill_last_name_field()
+        order_page.fill_city_field()
+        order_page.fill_metro_station_field()
+        order_page.fill_number_phone_field()
+        order_page.click_next_button()
 
         # Вторая страница заказа
-        SPO = SecondPageOrdering(driver)
-        SPO.fill_date_for_the_order_field()
-        SPO.fill_rental_period_field()
-        SPO.fill_color_scooter_field()
-        SPO.click_order_button()
-        SPO.click_yes_button()
-        SPO.click_button_check_status()
+        order_page.fill_date_for_the_order_field()
+        order_page.fill_rental_period_field()
+        order_page.fill_color_scooter_field()
+        order_page.click_order_button()
+        order_page.click_yes_button()
+        order_page.click_button_check_status()
 
-        # Страница статуса заказа
-        OSP = OrderStatusPage(driver)
-        OSP.click_yandex_button_on_header()
-        # Проверка открытия страницы dzen.ru
-        assert Url.dzen_url in driver.current_url
+        main_page.click_yandex_button_on_header()
+
+        assert Urls.dzen_url in order_page.get_current_url()
 
     @allure.title('Проверка редиректа на главную страницу через кнопки хедера после заказа')
     @allure.description('Тест-кейс на проверку перенаправления на главную страницу после успешного оформления заказа через верхнюю и среднюю кнопку заказа на сайте')
-    @pytest.mark.parametrize("start_order", ["wait_and_click_top_order_button", "scroll_and_click_middle_order_button"])
+    @pytest.mark.parametrize("start_order", ["click_top_order_button", "click_middle_order_button"])
     def test_redirect_to_main_page_after_order(self, driver, start_order):
-        driver.get(Url.qa_scooter_main_url)
-        main = MainPage(driver)
+        main_page = MainPage(driver)
+        main_page.open_main_page()
         # Старт заказа
-        getattr(main, start_order)()
+        getattr(main_page, start_order)()
 
+        """Делаем заказ"""
         # Первая страница заказа
-        FPO = FirstPageOrdering(driver)
-        FPO.fill_first_name_field()
-        FPO.fill_last_name_field()
-        FPO.fill_city_field()
-        FPO.fill_metro_station_field()
-        FPO.fill_number_phone_field()
-        FPO.click_next_button()
+        order_page = OrderPage(driver)
+        order_page.fill_first_name_field()
+        order_page.fill_last_name_field()
+        order_page.fill_city_field()
+        order_page.fill_metro_station_field()
+        order_page.fill_number_phone_field()
+        order_page.click_next_button()
 
         # Вторая страница заказа
-        SPO = SecondPageOrdering(driver)
-        SPO.fill_date_for_the_order_field()
-        SPO.fill_rental_period_field()
-        SPO.fill_color_scooter_field()
-        SPO.click_order_button()
-        SPO.click_yes_button()
-        SPO.click_button_check_status()
+        order_page.fill_date_for_the_order_field()
+        order_page.fill_rental_period_field()
+        order_page.fill_color_scooter_field()
+        order_page.click_order_button()
+        order_page.click_yes_button()
+        order_page.click_button_check_status()
 
-        # Страница статуса заказа
-        OSP = OrderStatusPage(driver)
-        OSP.click_scooter_button_on_header()
-        # Проверка открытия главной страницы
-        assert driver.current_url == Url.qa_scooter_main_url
+        main_page.click_scooter_button_on_header()
+
+        assert order_page.get_current_url() == Urls.qa_scooter_main_url

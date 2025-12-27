@@ -1,9 +1,8 @@
 import pytest
 import allure
 from pages.main_page import MainPage
-from data.data_important_questions import AllAnswer
+from data.data_main_page import AllAnswer
 from locators.locators_main_page import ElementsMainPage as EMP
-from data.data_url import Url
 
 class TestImportantQuestions:
 
@@ -22,11 +21,11 @@ class TestImportantQuestions:
     @allure.description('Тест-кейс на проверку текста ответа под вопросами"')
     @pytest.mark.parametrize("question_index, answer_locator, expected_answer", questions_data)
     def test_visibility_text_questions(self, driver, question_index, answer_locator, expected_answer):
-        driver.get(Url.qa_scooter_main_url)
-        section = MainPage(driver)
-        section.scroll_bottom_page()
-        section.click_questions(question_index)
-        section.wait_answer(answer_locator)
-        answer_text = driver.find_element(*answer_locator).text
-        # Проверяем каждый текст ответа
+        main_page = MainPage(driver)
+        main_page.open_main_page()
+        main_page.scroll_bottom_page()
+        main_page.click_questions(question_index)
+        main_page.wait_answer(answer_locator)
+        answer_text = main_page.find_element_text(answer_locator)
+
         assert answer_text == expected_answer

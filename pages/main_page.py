@@ -1,38 +1,46 @@
 import allure
-from selenium.webdriver.support.wait import WebDriverWait as wait
-from selenium.webdriver.support import expected_conditions as EC
+from pages.base_page import BasePage
 from locators.locators_main_page import ElementsMainPage as EMP
+from data.data_url import Urls
 
-class MainPage:
-    def __init__(self, driver):
-        self.driver = driver
+"""qa-scooter.praktikum-services.ru/"""
+class MainPage(BasePage):
 
-    """Верхняя часть главной страницы"""
-    # ожидание и клик по кнопке заказа в верхней части страницы
-    @allure.step('Ожидание и клик по кнопке заказа в верхней части страницы')
-    def wait_and_click_top_order_button(self):
-        wait(self.driver, 5).until(EC.element_to_be_clickable(EMP.TOP_ORDER_BUTTON)).click()
+    @allure.step('Открываем сайт qa-scooter')
+    def open_main_page(self):
+        self.open(Urls.qa_scooter_main_url)
 
-    """Средняя часть главной страницы"""
-    # скролл и клик до кнопки заказа в средней области страницы
-    @allure.step('Скролл и клик до кнопки заказа в средней области страницы')
-    def scroll_and_click_middle_order_button(self):
-        element = self.driver.find_element(*EMP.MIDDLE_ORDER_BUTTON)
-        self.driver.execute_script("arguments[0].scrollIntoView();", element)
-        element.click()
+    @allure.step('Нажимаем верхнюю кнопку "Заказать"')
+    def click_top_order_button(self):
+        self.click(EMP.TOP_ORDER_BUTTON)
 
-    """Нижняя часть главной страницы"""
-    # скролл до низа страницы
-    @allure.step('Скролл до низа страницы')
+    @allure.step('Скроллим и нажимаем кнопку "Заказать" в середине страницы')
+    def click_middle_order_button(self):
+        self.scroll_and_click(EMP.MIDDLE_ORDER_BUTTON)
+
+    @allure.step('Скроллим страницу до низа')
     def scroll_bottom_page(self):
-        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        self.scroll_to_bottom()
 
-    # клик по раскрывающемуся списку в разделе «Вопросы о важном»
-    @allure.step('Клик по раскрывающемуся списку в разделе «Вопросы о важном»')
+    @allure.step('Кликаем по вопросу в разделе «Вопросы о важном»')
     def click_questions(self, index: int):
-        self.driver.find_element(*EMP.DROP_DOWN_TEXT[index]).click()
+        self.click(EMP.DROP_DOWN_TEXT[index])
 
-    # ожидаем видимость ответа под вопросами
-    @allure.step('Ожидаем видимость ответа под вопросами')
+    @allure.step('Ожидаем отображение ответа')
     def wait_answer(self, answer_locator):
-        wait(self.driver, 5).until(EC.visibility_of_element_located(answer_locator))
+        self.wait_visible(answer_locator)
+
+    @allure.step('Кликаем на кнопку "Яндекс" в хедере')
+    def click_yandex_button_on_header(self):
+        self.wait_visible(EMP.BUTTON_YANDEX_ON_HEADER)
+        tabs_before = self.get_window_handles()
+        self.click(EMP.BUTTON_YANDEX_ON_HEADER)
+        tabs_after = self.get_window_handles()
+        new_tab = list(set(tabs_after) - set(tabs_before))[0]
+        self.driver.switch_to.window(new_tab)
+        self.get_url_contains(Urls.dzen_url)
+
+    @allure.step('Кликаем на кнопку "Самокат" в хедере')
+    def click_scooter_button_on_header(self):
+        self.click(EMP.BUTTON_SCOOTER_ON_HEADER)
+        self.get_url_contains(Urls.qa_scooter_main_url)
