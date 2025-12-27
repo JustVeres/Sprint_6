@@ -3,6 +3,7 @@ import allure
 from pages.main_page import MainPage
 from data.data_important_questions import AllAnswer
 from locators.locators_main_page import ElementsMainPage as EMP
+from data.data_url import Url
 
 class TestImportantQuestions:
 
@@ -20,8 +21,8 @@ class TestImportantQuestions:
     @allure.title('Проверка соответствия ответов под каждым вопросом')
     @allure.description('Тест-кейс на проверку текста ответа под вопросами"')
     @pytest.mark.parametrize("question_index, answer_locator, expected_answer", questions_data)
-    def test_visibility_text_questions(self, driver, website, question_index, answer_locator, expected_answer):
-        driver.get(website)
+    def test_visibility_text_questions(self, driver, question_index, answer_locator, expected_answer):
+        driver.get(Url.qa_scooter_main_url)
         section = MainPage(driver)
         section.scroll_bottom_page()
         section.click_questions(question_index)

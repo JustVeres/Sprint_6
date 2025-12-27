@@ -2,6 +2,7 @@ import allure
 from selenium.webdriver.support.wait import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 from locators.locators_order_status_page import StatusPageElements as SP
+from data.data_url import Url
 
 class OrderStatusPage:
     def __init__(self, driver):
@@ -15,10 +16,10 @@ class OrderStatusPage:
         tabs_after = self.driver.window_handles
         new_tab = list(set(tabs_after) - set(tabs_before))[0]
         self.driver.switch_to.window(new_tab)
-        wait(self.driver, 10).until(EC.url_contains("dzen.ru"))
+        wait(self.driver, 10).until(EC.url_contains(Url.dzen_url))
 
     @allure.step('Кликаем на кнопку "Самокат" в хэдере')
     def click_scooter_button_on_header(self):
         wait(self.driver, 5).until(EC.visibility_of_element_located(SP.BUTTON_SCOOTER_ON_HEADER))
         self.driver.find_element(*SP.BUTTON_SCOOTER_ON_HEADER).click()
-        wait(self.driver, 10).until(EC.url_contains("https://qa-scooter.praktikum-services.ru/"))
+        wait(self.driver, 10).until(EC.url_contains(Url.qa_scooter_main_url))

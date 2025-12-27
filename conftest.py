@@ -7,7 +7,3 @@ def driver():
     driver_instance.maximize_window()
     yield driver_instance
     driver_instance.quit()
-
-@pytest.fixture # Фикстура со ссылкой на тестовый стенд
-def website():
-    return "https://qa-scooter.praktikum-services.ru/"

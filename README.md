@@ -8,6 +8,7 @@ Sprint_6/
 ├── data/
 │   ├── data_important_questions.py         # Тестовые данные для блока "Вопросы о важном"
 │   └── data_order_scooter.py               # Тестовые данные для оформления заказа самоката
+│   └── data_url.py                         # Тестовые данные с url
 
 ├── locators/
 │   ├── locators_main_page.py                    # Локаторы главной страницы

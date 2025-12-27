@@ -3,14 +3,14 @@ import allure
 from pages.main_page import MainPage
 from pages.order_registration_page_one import FirstPageOrdering
 from pages.order_registration_page_two import SecondPageOrdering
-
+from data.data_url import Url
 
 class TestOrderingScooter:
     @allure.title('Проверка заказа самоката')
     @allure.description('Тест-кейс на проверку успешного заказа через верхнюю и среднюю кнопку заказа на сайте')
     @pytest.mark.parametrize("start_order", ["wait_and_click_top_order_button", "scroll_and_click_middle_order_button"])
-    def test_order_scooter(self, driver, website, start_order):
-        driver.get(website)
+    def test_order_scooter(self, driver, start_order):
+        driver.get(Url.qa_scooter_main_url)
         main = MainPage(driver)
         # Старт заказа
         getattr(main, start_order)()

@@ -4,13 +4,14 @@ from pages.main_page import MainPage
 from pages.order_registration_page_one import FirstPageOrdering
 from pages.order_registration_page_two import SecondPageOrdering
 from pages.order_status_page import OrderStatusPage
+from data.data_url import Url
 
 class TestCheckRedirect:
     @allure.title('Проверка редиректа на dzen.ru через кнопки хедера после заказа')
     @allure.description('Тест-кейс на проверку перенаправления на dzen.ru после успешного оформления заказа через верхнюю и среднюю кнопку заказа на сайте')
     @pytest.mark.parametrize("start_order", ["wait_and_click_top_order_button", "scroll_and_click_middle_order_button"])
-    def test_redirect_to_dzen_page_after_order(self, driver, website, start_order):
-        driver.get(website)
+    def test_redirect_to_dzen_page_after_order(self, driver, start_order):
+        driver.get(Url.qa_scooter_main_url)
         main = MainPage(driver)
         # Старт заказа
         getattr(main, start_order)()
@@ -37,13 +38,13 @@ class TestCheckRedirect:
         OSP = OrderStatusPage(driver)
         OSP.click_yandex_button_on_header()
         # Проверка открытия страницы dzen.ru
-        assert "dzen.ru" in driver.current_url
+        assert Url.dzen_url in driver.current_url
 
     @allure.title('Проверка редиректа на главную страницу через кнопки хедера после заказа')
     @allure.description('Тест-кейс на проверку перенаправления на главную страницу после успешного оформления заказа через верхнюю и среднюю кнопку заказа на сайте')
     @pytest.mark.parametrize("start_order", ["wait_and_click_top_order_button", "scroll_and_click_middle_order_button"])
-    def test_redirect_to_main_page_after_order(self, driver, website, start_order):
-        driver.get(website)
+    def test_redirect_to_main_page_after_order(self, driver, start_order):
+        driver.get(Url.qa_scooter_main_url)
         main = MainPage(driver)
         # Старт заказа
         getattr(main, start_order)()
@@ -70,4 +71,4 @@ class TestCheckRedirect:
         OSP = OrderStatusPage(driver)
         OSP.click_scooter_button_on_header()
         # Проверка открытия главной страницы
-        assert driver.current_url == "https://qa-scooter.praktikum-services.ru/"
+        assert driver.current_url == Url.qa_scooter_main_url
